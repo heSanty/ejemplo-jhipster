@@ -4,7 +4,7 @@ import java.util.Optional;
 import mx.conacyt.componentes.informacion.repository.CompFormatoDocumentoRepository;
 import mx.conacyt.componentes.informacion.service.CompFormatoDocumentoService;
 import mx.conacyt.componentes.informacion.service.api.dto.CompFormatoDocumentoDto;
-import mx.conacyt.componentes.informacion.web.api.mapper.CompFormatoDocumentoMapper;
+import mx.conacyt.componentes.informacion.service.mapper.CompFormatoDocumentoMapper;
 import org.springframework.stereotype.Service;
 
 @Service
