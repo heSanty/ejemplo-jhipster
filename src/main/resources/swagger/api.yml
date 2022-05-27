@@ -5,28 +5,122 @@ info:
   title: 'informacionMs'
   version: 0.0.1
 servers:
-  - url: http://localhost:8086/api
+  - url: http://localhost:8090/api
     description: Development server
-  - url: https://localhost:8086/api
+  - url: https://localhost:8090/api
     description: Development server with TLS Profile
-paths: {}
+tags:
+  - name: informacion-resource
+    description: Recurso para firmar un documento por CURP.
+paths:
+  '/informacion/{id}':
+    get:
+      tags:
+        - informacion-resource
+      summary: Firma un documento por CURP.
+      operationId: getCompFormatoDocumentoUsingGET
+      parameters:
+        - name: id
+          in: path
+          description: id
+          required: true
+          style: simple
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: La operación ha sido exitosa.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CompFormatoDocumento'
+        '400':
+          '$ref': '#/components/responses/BadRequest'
+        '401':
+          '$ref': '#/components/responses/Unauthorized'
+        '403':
+          '$ref': '#/components/responses/Forbidden'
+        '404':
+          '$ref': '#/components/responses/NotFound'
+        '429':
+          '$ref': '#/components/responses/TooManyRequests'
+        default:
+          '$ref': '#/components/responses/UnexpectedError'
 components:
   responses:
-    Problem:
-      description: error occurred - see status code and problem object for more information.
+    NotFound:
+      description: The specified resource was not found
       content:
-        'application/problem+json':
+        application/problem+json:
           schema:
-            $ref: 'https://opensource.zalando.com/problem/schema.yaml#/Problem'
-
+            '$ref': https://opensource.zalando.com/problem/schema.yaml#/Problem
+    BadRequest:
+      description: BadRequest
+      content:
+        application/problem+json:
+          schema:
+            '$ref': https://opensource.zalando.com/problem/schema.yaml#/Problem
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/problem+json:
+          schema:
+            '$ref': https://opensource.zalando.com/problem/schema.yaml#/Problem
+    Forbidden:
+      description: Forbidden
+      content:
+        application/problem+json:
+          schema:
+            '$ref': https://opensource.zalando.com/problem/schema.yaml#/Problem
+    TooManyRequests:
+      description: Too Many Requests
+      content:
+        application/problem+json:
+          schema:
+            '$ref': https://opensource.zalando.com/problem/schema.yaml#/Problem
+    UnexpectedError:
+      description: Unexpected error
+      content:
+        application/problem+json:
+          schema:
+            '$ref': https://opensource.zalando.com/problem/schema.yaml#/Problem
+    Conflict:
+      description: Indicates a request conflict with current state of the target resource.
+      content:
+        application/problem+json:
+          schema:
+            '$ref': https://opensource.zalando.com/problem/schema.yaml#/Problem
+    Problem:
+      description: Error occurred   - see status code and problem object for more information.
+      content:
+        application/problem+json:
+          schema:
+            '$ref': https://opensource.zalando.com/problem/schema.yaml#/Problem
+  schemas:
+    CompFormatoDocumento:
+      title: CompFormatoDocumento
+      type: object
+      properties:
+        idCompDoctoFuncionalidad:
+          type: integer
+          format: int64
+        idCompFormatoDocumento:
+          type: integer
+          format: int64
+        idFormatoDocumento:
+          type: integer
+          format: int64
+        nombre:
+          type: string
   securitySchemes:
     oauth:
       type: oauth2
       description: OAuth2 authentication with KeyCloak
       flows:
         authorizationCode:
-          authorizationUrl: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
-          tokenUrl: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
+          authorizationUrl: https://idm.crip.conacyt.mx/auth/realms/miic/protocol/openid-connect/auth
+          tokenUrl: https://idm.crip.conacyt.mx/auth/realms/miic/protocol/openid-connect/token
           scopes:
             jhipster: Jhipster specific claims
             email: Email claims
@@ -34,7 +128,7 @@ components:
     openId:
       type: openIdConnect
       description: OpenID Connect authentication with KeyCloak
-      openIdConnectUrl: http://localhost:9080/auth/realms/jhipster/.well-known/openid-configuration
+      openIdConnectUrl: https://idm.crip.conacyt.mx/auth/realms/miic/.well-known/openid-configuration
 security:
   - oauth: [jhipster, email, profile]
   - openId: [jhipster, email, profile]

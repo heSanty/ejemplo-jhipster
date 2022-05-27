@@ -67,7 +67,7 @@ management:
         include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump']
   endpoint:
     health:
-      show-details: when_authorized
+      show-details: when-authorized
       roles: 'ROLE_ADMIN'
       probes:
         enabled: true
@@ -150,11 +150,11 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: http://localhost:9080/auth/realms/jhipster
+            issuer-uri:
         registration:
           oidc:
-            client-id: internal
-            client-secret: internal
+            client-id:
+            client-secret:
             scope: openid,profile,email
 
 server:
